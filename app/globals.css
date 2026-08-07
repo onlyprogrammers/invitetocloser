@@ -1,0 +1,245 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@theme inline {
+  --font-sans: var(--font-cormorant), Georgia, serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-script: var(--font-vibes), cursive;
+  --font-arabic: var(--font-amiri), serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-destructive: var(--destructive);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  color-scheme: light;
+
+  /* cream paper */
+  --background: oklch(0.972 0.017 84);
+  --foreground: oklch(0.32 0.036 62);
+
+  --card: oklch(0.99 0.008 88);
+  --card-foreground: oklch(0.32 0.036 62);
+
+  --popover: oklch(0.99 0.008 88);
+  --popover-foreground: oklch(0.32 0.036 62);
+
+  /* antique gold */
+  --primary: oklch(0.72 0.098 80);
+  --primary-foreground: oklch(0.99 0.008 88);
+
+  /* deep espresso brown */
+  --secondary: oklch(0.42 0.062 62);
+  --secondary-foreground: oklch(0.97 0.017 84);
+
+  --muted: oklch(0.94 0.023 84);
+  --muted-foreground: oklch(0.52 0.036 62);
+
+  /* deep emerald accent */
+  --accent: oklch(0.38 0.062 158);
+  --accent-foreground: oklch(0.97 0.017 84);
+
+  --border: oklch(0.86 0.043 82);
+  --input: oklch(0.86 0.043 82);
+  --ring: oklch(0.72 0.098 80);
+  --destructive: oklch(0.55 0.16 25);
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------- decorative helpers ---------- */
+.paper-bg {
+  background-color: transparent;
+}
+
+/* fixed, heavily blurred mosque backdrop behind everything */
+.fixed-bg {
+  position: fixed;
+  inset: -8vmax;
+  z-index: 0;
+  background-image: url('/images/mosque-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(18px) saturate(1.08) brightness(1.02);
+  transform: scale(1.08);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* cream veil so the invitation copy stays legible on top */
+.fixed-bg-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    url('/images/pattern-bg.png'),
+    linear-gradient(
+      to bottom,
+      oklch(0.972 0.017 84 / 52%),
+      oklch(0.972 0.017 84 / 66%) 45%,
+      oklch(0.972 0.017 84 / 56%)
+    );
+  background-size:
+    520px,
+    cover;
+  background-repeat: repeat, no-repeat;
+  background-blend-mode: soft-light, normal;
+  pointer-events: none;
+}
+
+.gold-text {
+  background-image: linear-gradient(
+    100deg,
+    oklch(0.62 0.09 74),
+    oklch(0.82 0.11 88),
+    oklch(0.66 0.1 76)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gold-rule {
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--primary),
+    transparent
+  );
+}
+
+/* ---------- animations ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes softIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes haloPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 oklch(0.72 0.098 80 / 55%),
+      0 0 40px oklch(0.72 0.098 80 / 25%);
+  }
+  50% {
+    box-shadow:
+      0 0 0 22px oklch(0.72 0.098 80 / 0%),
+      0 0 60px oklch(0.72 0.098 80 / 40%);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -160% 0;
+  }
+  to {
+    background-position: 260% 0;
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: fadeUp 0.9s cubic-bezier(0.22, 0.68, 0.24, 1) forwards;
+}
+
+.animate-soft-in {
+  animation: softIn 1.1s cubic-bezier(0.22, 0.68, 0.24, 1) forwards;
+}
+
+.animate-halo {
+  animation: haloPulse 2.6s ease-in-out infinite;
+}
+
+.shimmer-line {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.92 0.06 88 / 85%),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3.4s linear infinite;
+}
+
+.scroll-locked {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+
+.scratch-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.scratch-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
