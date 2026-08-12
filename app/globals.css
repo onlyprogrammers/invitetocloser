@@ -39,32 +39,32 @@
   color-scheme: light;
 
   /* cream paper */
-  --background: oklch(0.972 0.017 84);
-  --foreground: oklch(0.32 0.036 62);
+  --background: oklch(45.899% 0.19571 309.525);
+  --foreground: oklch(74.618% 0.19928 150.314);
 
   --card: oklch(0.99 0.008 88);
   --card-foreground: oklch(0.32 0.036 62);
 
-  --popover: oklch(0.99 0.008 88);
+  --popover: oklch(77.615% 0.22932 138.484);
   --popover-foreground: oklch(0.32 0.036 62);
 
   /* antique gold */
-  --primary: oklch(0.72 0.098 80);
+  --primary: oklch(88.351% 0.26721 138.773);
   --primary-foreground: oklch(0.99 0.008 88);
 
   /* deep espresso brown */
-  --secondary: oklch(0.42 0.062 62);
+  --secondary: oklch(70.036% 0.16384 128.68);
   --secondary-foreground: oklch(0.97 0.017 84);
 
   --muted: oklch(0.94 0.023 84);
-  --muted-foreground: oklch(0.52 0.036 62);
+  --muted-foreground: oklch(94.802% 0.21855 117.013);
 
   /* deep emerald accent */
   --accent: oklch(0.38 0.062 158);
   --accent-foreground: oklch(0.97 0.017 84);
 
   --border: oklch(0.86 0.043 82);
-  --input: oklch(0.86 0.043 82);
+  --input: oklch(68.29% 0.30219 336.091 / 0.596);
   --ring: oklch(0.72 0.098 80);
   --destructive: oklch(0.55 0.16 25);
 
@@ -98,7 +98,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: blur(18px) saturate(1.08) brightness(1.02);
+  filter: blur(10px) saturate(1.08) brightness(1.02);
   transform: scale(1.08);
   will-change: transform;
   pointer-events: none;
@@ -112,15 +112,17 @@
   background-image:
     url('/images/pattern-bg.png'),
     linear-gradient(
-      to bottom,
-      oklch(0.972 0.017 84 / 52%),
-      oklch(0.972 0.017 84 / 66%) 45%,
-      oklch(0.972 0.017 84 / 56%)
+      180deg,
+      oklch(97.154% 0.017 84.551 / 0.13),
+      oklch(97.154% 0.017 84.551 / 0.151)
     );
+  background-position:
+    center,
+    center;
   background-size:
     520px,
     cover;
-  background-repeat: repeat, no-repeat;
+  background-repeat: no-repeat;
   background-blend-mode: soft-light, normal;
   pointer-events: none;
 }
@@ -135,6 +137,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.18), 0 0 28px rgba(0, 0, 0, 0.12);
 }
 
 .gold-rule {
@@ -144,6 +147,23 @@
     var(--primary),
     transparent
   );
+}
+
+.button-highlight {
+  animation: buttonGlow 1.8s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(212, 175, 85, 0.2);
+  border-color: rgba(212, 175, 85, 0.45);
+  background-color: rgba(212, 175, 85, 0.08);
+}
+
+@keyframes buttonGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 85, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px rgba(212, 175, 85, 0.18);
+  }
 }
 
 /* ---------- animations ---------- */
