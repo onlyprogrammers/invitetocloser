@@ -139,13 +139,13 @@ export function OpenGate() {
           <p className="relative text-[0.65rem] tracking-[0.45em] text-primary uppercase sm:text-xs">
             Walima Ceremony of
           </p>
-          <h2 className="gold-text relative font-script text-5xl leading-[1.15] sm:text-7xl">
+          <h2 className="gold-text px-3 sm:px-4 relative font-script text-5xl leading-[1.15] sm:text-7xl">
             {invitation.groom}
           </h2>
           <span className="relative font-sans text-base tracking-[0.3em] text-white/80 uppercase">
             &amp;
           </span>
-          <h2 className="gold-text relative font-script text-5xl leading-[1.15] sm:text-7xl">
+          <h2 className="gold-text px-3 sm:px-4 relative font-script text-5xl leading-[1.15] sm:text-7xl">
             {invitation.bride}
           </h2>
           <div className="shimmer-line relative mt-2 h-px w-40" />
