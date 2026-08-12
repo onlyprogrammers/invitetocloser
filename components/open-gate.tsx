@@ -1,65 +1,65 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { invitation } from '@/lib/invitation-data'
+import { useEffect, useRef, useState } from "react";
+import { invitation } from "@/lib/invitation-data";
 
-type Stage = 'idle' | 'playing' | 'closing' | 'done'
+type Stage = "idle" | "playing" | "closing" | "done";
 
 export function OpenGate() {
-  const [stage, setStage] = useState<Stage>('idle')
-  const [showNames, setShowNames] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [stage, setStage] = useState<Stage>("idle");
+  const [showNames, setShowNames] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   /* lock scrolling until the film has finished */
   useEffect(() => {
-    const locked = stage !== 'done'
-    document.documentElement.classList.toggle('scroll-locked', locked)
-    document.body.classList.toggle('scroll-locked', locked)
-    if (locked) window.scrollTo(0, 0)
+    const locked = stage !== "done";
+    document.documentElement.classList.toggle("scroll-locked", locked);
+    document.body.classList.toggle("scroll-locked", locked);
+    if (locked) window.scrollTo(0, 0);
     return () => {
-      document.documentElement.classList.remove('scroll-locked')
-      document.body.classList.remove('scroll-locked')
-    }
-  }, [stage])
+      document.documentElement.classList.remove("scroll-locked");
+      document.body.classList.remove("scroll-locked");
+    };
+  }, [stage]);
 
   /* names appear 4s after the video starts */
   useEffect(() => {
-    if (stage !== 'playing') return
-    const t = window.setTimeout(() => setShowNames(true), 4000)
-    return () => window.clearTimeout(t)
-  }, [stage])
+    if (stage !== "playing") return;
+    const t = window.setTimeout(() => setShowNames(true), 4000);
+    return () => window.clearTimeout(t);
+  }, [stage]);
 
   const open = async () => {
-    setStage('playing')
-    const video = videoRef.current
-    if (!video) return
+    setStage("playing");
+    const video = videoRef.current;
+    if (!video) return;
     try {
-      video.currentTime = 0
-      await video.play()
+      video.currentTime = 0;
+      await video.play();
     } catch {
-      video.muted = true
-      void video.play()
+      video.muted = true;
+      void video.play();
     }
-  }
+  };
 
   const finish = () => {
-    setStage('closing')
-    window.setTimeout(() => setStage('done'), 900)
-  }
+    setStage("closing");
+    window.setTimeout(() => setStage("done"), 900);
+  };
 
-  if (stage === 'done') return null
+  if (stage === "done") return null;
 
   return (
     <div
       className={`fixed inset-0 z-50 transition-opacity duration-700 ${
-        stage === 'closing' ? 'opacity-0' : 'opacity-100'
+        stage === "closing" ? "opacity-0" : "opacity-100"
       }`}
-      aria-hidden={stage === 'closing'}
+      aria-hidden={stage === "closing"}
     >
       {/* ---------- invitation cover ---------- */}
       <div
         className={`paper-bg absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 transition-opacity duration-700 ${
-          stage === 'idle' ? 'opacity-100' : 'pointer-events-none opacity-0'
+          stage === "idle" ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         {/* opaque base + the same blurred mosque backdrop as the page */}
@@ -73,9 +73,9 @@ export function OpenGate() {
           className="pointer-events-none absolute inset-x-0 top-0 z-10 mx-auto h-[62%] w-auto max-w-none opacity-25 mix-blend-multiply"
           style={{
             maskImage:
-              'radial-gradient(ellipse at 50% 40%, black 45%, transparent 78%)',
+              "radial-gradient(ellipse at 50% 40%, black 45%, transparent 78%)",
             WebkitMaskImage:
-              'radial-gradient(ellipse at 50% 40%, black 45%, transparent 78%)',
+              "radial-gradient(ellipse at 50% 40%, black 45%, transparent 78%)",
           }}
         />
 
@@ -111,7 +111,7 @@ export function OpenGate() {
       {/* ---------- full page film ---------- */}
       <div
         className={`absolute inset-0 bg-black transition-opacity duration-700 ${
-          stage === 'idle' ? 'pointer-events-none opacity-0' : 'opacity-100'
+          stage === "idle" ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
       >
         <video
@@ -126,14 +126,14 @@ export function OpenGate() {
         {/* names revealed after 4 seconds */}
         <div
           className={`pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center transition-all duration-1000 ${
-            showNames ? 'opacity-100' : 'translate-y-4 opacity-0'
+            showNames ? "opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 px-3 sm:px-4" 
             style={{
               background:
-                'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.5) 42%, rgba(0,0,0,0.18) 72%, rgba(0,0,0,0.1) 100%)',
+                "radial-gradient(circle at 50% 50%, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.5) 42%, rgba(0,0,0,0.18) 72%, rgba(0,0,0,0.1) 100%)",
             }}
           />
           <p className="relative text-[0.65rem] tracking-[0.45em] text-primary uppercase sm:text-xs">
@@ -152,5 +152,5 @@ export function OpenGate() {
         </div>
       </div>
     </div>
-  )
+  );
 }
