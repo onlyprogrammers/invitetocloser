@@ -32,13 +32,13 @@ export function HeroInvite() {
 
         <Reveal delay={220} className="w-full">
           <div className="flex flex-col items-center gap-2">
-            <h1 className="gold-text font-script text-6xl leading-[1.1] sm:text-7xl">
+            <h1 className="gold-text px-3 sm:px-4 font-script text-6xl leading-[1.1] sm:text-7xl">
               {invitation.groom}
             </h1>
             <span className="font-sans text-sm tracking-[0.4em] text-secondary/70 uppercase">
               &amp;
             </span>
-            <h1 className="gold-text font-script text-6xl leading-[1.1] sm:text-7xl">
+            <h1 className="gold-text px-3 sm:px-4 font-script text-6xl leading-[1.1] sm:text-7xl">
               {invitation.bride}
             </h1>
           </div>
