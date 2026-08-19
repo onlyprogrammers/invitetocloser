@@ -257,13 +257,6 @@ export function ScratchDate() {
               <span className="rounded-full bg-secondary/90 px-4 py-1.5 text-[0.65rem] tracking-[0.28em] text-secondary-foreground uppercase shadow-lg backdrop-blur-sm">
                 Scratch to reveal date & time
               </span>
-              <div className="h-1.5 w-40 overflow-hidden rounded-full bg-black/15">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-200 transition-all duration-300"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <p className="text-[10px] tracking-[0.2em] text-white/90 uppercase">{progress}% revealed</p>
             </div>
           )}
         </div>

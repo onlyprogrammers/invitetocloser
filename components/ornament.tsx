@@ -20,7 +20,7 @@ export function SectionTitle({
       <p className="text-[0.65rem] tracking-[0.4em] text-primary uppercase">
         {eyebrow}
       </p>
-      <h2 className="font-script text-4xl leading-tight text-secondary text-balance sm:text-5xl">
+      <h2 className="font-script text-4xl leading-tight gold-text text-balance sm:text-5xl">
         {title}
       </h2>
       <span className="gold-rule h-px w-24" />

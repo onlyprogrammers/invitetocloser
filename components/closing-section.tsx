@@ -18,7 +18,7 @@ export function ClosingSection() {
 
       <div className="relative mx-auto flex max-w-md flex-col items-center gap-6 text-center">
         <Reveal>
-          <h3 className="font-script text-4xl leading-tight text-secondary text-balance">
+          <h3 className="gold-text font-script text-4xl leading-tight text-balance">
             Your presence will make our day beautiful
           </h3>
         </Reveal>
@@ -26,7 +26,7 @@ export function ClosingSection() {
         <Reveal delay={120} className="w-full">
           <div className="flex flex-col items-center gap-3">
             <span className="gold-rule h-px w-24" />
-            <p className="text-pretty text-base leading-relaxed text-muted-foreground italic">
+            <p className="text-pretty text-base leading-relaxed gold-text italic">
               &ldquo;The best of you are those who are best to their
               families.&rdquo;
             </p>
@@ -45,13 +45,14 @@ export function ClosingSection() {
 
         <Reveal delay={300} className="w-full">
           <div className="flex flex-col items-center gap-2 pt-4">
-            <p className="font-script text-3xl text-secondary">
+            <p className="gold-text font-script text-3xl">
               Jazak&apos;Allah Khair
             </p>
-            <p className="text-xs tracking-[0.34em] text-muted-foreground uppercase">
-              {invitation.groom} &amp; {invitation.bride} ✦{' '}
-              {invitation.date.full}
-            </p>
+            <div className="rounded-2xl bg-card/80 px-4 py-2 scratch-shimmer">
+              <p className="text-xs tracking-[0.34em] text-muted-foreground uppercase text-center">
+                {invitation.groom} &amp; {invitation.bride} ✦ {invitation.date.full}
+              </p>
+            </div>
           </div>
         </Reveal>
       </div>

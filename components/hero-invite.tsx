@@ -1,6 +1,7 @@
 import { Ornament } from '@/components/ornament'
 import { Reveal } from '@/components/reveal'
 import { invitation } from '@/lib/invitation-data'
+import Slider3D from '@/components/slider-3d'
 
 export function HeroInvite() {
   return (
@@ -60,11 +61,17 @@ export function HeroInvite() {
         </Reveal>
 
         <Reveal delay={520}>
-          <p className="max-w-sm text-pretty text-base leading-relaxed text-foreground/80">
+          <p className="max-w-sm text-pretty text-base leading-relaxed gold-text">
             With the blessings of Almighty Allah, {invitation.hosts} request the
             honour of your presence at the Walima reception, an evening of
             prayers, feast and gratitude.
           </p>
+        </Reveal>
+
+        <Reveal delay={640} className="w-full">
+          <div className="w-full pt-6">
+            <Slider3D />
+          </div>
         </Reveal>
       </div>
     </section>

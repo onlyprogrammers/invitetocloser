@@ -19,8 +19,8 @@ export function ContactSection() {
 
         <Reveal delay={180} className="w-full">
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-primary/40 bg-card/80 px-6 py-8">
-            <h3 className="font-script text-3xl text-secondary">Contact</h3>
-            <p className="font-sans text-2xl tracking-[0.1em] text-secondary">
+            <h3 className="gold-text font-script text-3xl">Contact</h3>
+            <p className="font-sans text-2xl tracking-[0.1em] gold-text">
               {invitation.contact.display}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">

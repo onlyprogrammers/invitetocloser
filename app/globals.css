@@ -44,6 +44,9 @@
 
   --card: oklch(0.99 0.008 88);
   --card-foreground: oklch(0.32 0.036 62);
+  /* make boxed UI elements have a deep emerald / green tint */
+  --card: oklch(28% 0.06 158);
+  --card-foreground: oklch(97% 0.03 80);
 
   --popover: oklch(77.615% 0.22932 138.484);
   --popover-foreground: oklch(0.32 0.036 62);
@@ -257,6 +260,38 @@
 
   animation: shimmer 3s infinite;
 }
+
+/* 3D carousel styles */
+.carousel-3d {
+  perspective: 1200px;
+}
+.carousel-3d .stage {
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(.2,.9,.25,1);
+  display: grid;
+  place-items: center;
+}
+.carousel-3d .slide {
+  width: 92%;
+  max-width: 520px;
+  height: 220px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 18px 50px -26px rgba(0,0,0,0.45);
+  transform-origin: center center;
+  background-size: cover;
+  background-position: center;
+}
+.carousel-controls {
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  margin-top:10px;
+}
+.carousel-dot{
+  width:10px;height:10px;border-radius:999px;background:#ddd;opacity:.9
+}
+.carousel-dot.active{background:var(--primary)}
 
 @keyframes shimmer {
   100% {

@@ -21,7 +21,7 @@ export function VenueSection() {
 
             <div className="flex flex-col items-center gap-2 px-6 py-6 text-center">
               <MapPin className="size-5 text-primary" aria-hidden="true" />
-              <h3 className="font-script text-3xl leading-tight text-secondary">
+              <h3 className="gold-text font-script text-3xl leading-tight">
                 {invitation.venue.name}
               </h3>
               <p className="text-sm leading-relaxed text-muted-foreground">
