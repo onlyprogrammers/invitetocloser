@@ -18,32 +18,35 @@ export function Slider3D({ images = [] }: { images?: string[] }) {
     return () => clearInterval(t)
   }, [slides.length])
 
-  const angle = 30
-  const gap = 260
-
   return (
-    <div className="w-full carousel-3d">
-      <div
-        className="stage"
-        style={{
-          transform: `translateZ(-${gap}px) rotateY(-${index * angle}deg)`,
-        }}
-      >
+    <div className="carousel-3d">
+      <div className="stage" aria-live="polite">
         {slides.map((src, i) => {
-          const offset = i - index
-          const rotateY = offset * angle
-          const translateX = offset * 36
-          const scale = Math.max(0.78, 1 - Math.abs(offset) * 0.12)
+          const rawOffset = i - index
+          const wrappedOffset = ((rawOffset % slides.length) + slides.length) % slides.length
+          const offset = wrappedOffset > slides.length / 2 ? wrappedOffset - slides.length : wrappedOffset
+          const absOffset = Math.abs(offset)
+          const isVisible = absOffset <= 2
+          const translateX = offset * 170
+          const translateZ = offset === 0 ? 180 : -absOffset * 100 + 40
+          const rotateY = offset * -34
+          const scale = offset === 0 ? 1 : 1 - absOffset * 0.12
+          const opacity = isVisible ? 1 : 0
+
           return (
             <div
               key={src + i}
               className="slide"
               style={{
                 backgroundImage: `url(${src})`,
-                transform: `rotateY(${rotateY}deg) translateX(${translateX}px) scale(${scale}) translateZ(${Math.abs(offset) * 20}px)`,
-                position: 'absolute',
+                opacity,
+                zIndex: 20 - absOffset,
+                transform: `translate(-50%, -50%) translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                left: '50%',
+                top: '50%',
+                pointerEvents: i === index ? 'auto' : 'none',
               }}
-              aria-hidden={i !== index}
+              aria-hidden={!isVisible}
             />
           )
         })}
