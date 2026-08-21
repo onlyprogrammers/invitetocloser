@@ -1,12 +1,14 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Countdown } from '@/components/countdown'
 import { invitation } from '@/lib/invitation-data'
 
 const REVEAL_THRESHOLD = 0.45
 const BRUSH_RADIUS = 20
 const PROGRESS_INTERVAL = 160
+
+type RevealSide = 'left' | 'right'
 
 export function ScratchDate() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -18,6 +20,45 @@ export function ScratchDate() {
   const [showTime, setShowTime] = useState(false)
   const [scratchStarted, setScratchStarted] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [revealSide, setRevealSide] = useState<RevealSide>('left')
+  const [burstKey, setBurstKey] = useState(0)
+
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 20 }, (_, index) => ({
+        id: index,
+        x: index % 2 === 0 ? 18 + (index % 5) * 10 : 82 - (index % 5) * 10,
+        y: 28 + (index % 6) * 9,
+        dx: (revealSide === 'left' ? -1 : 1) * (16 + (index % 8) * 12),
+        dy: -20 - (index % 7) * 14,
+        delay: (index % 6) * 0.04,
+        duration: 0.7 + (index % 5) * 0.12,
+        size: 5 + (index % 4) * 2,
+        hue: index % 2 === 0 ? 42 : 52,
+      })),
+    [revealSide]
+  )
+
+  const reveal = useCallback(() => {
+    if (revealed) return
+
+    setRevealed(true)
+    setBurstKey((value) => value + 1)
+    if ('vibrate' in navigator) {
+      navigator.vibrate(30)
+    }
+    window.setTimeout(() => setShowTime(true), 900)
+  }, [revealed])
+
+  useEffect(() => {
+    if (!scratchStarted || revealed) return
+
+    const timer = window.setTimeout(() => {
+      reveal()
+    }, 2000)
+
+    return () => window.clearTimeout(timer)
+  }, [scratchStarted, reveal, revealed])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -53,14 +94,6 @@ export function ScratchDate() {
     paint()
     window.addEventListener('resize', paint)
     return () => window.removeEventListener('resize', paint)
-  }, [])
-
-  const reveal = useCallback(() => {
-    setRevealed(true)
-    if ('vibrate' in navigator) {
-      navigator.vibrate(30)
-    }
-    window.setTimeout(() => setShowTime(true), 900)
   }, [])
 
   const getCoordinates = (clientX: number, clientY: number) => {
@@ -154,6 +187,7 @@ export function ScratchDate() {
     (event: React.PointerEvent<HTMLCanvasElement>) => {
       event.preventDefault()
       setScratchStarted(true)
+      setRevealSide(event.clientX < window.innerWidth / 2 ? 'left' : 'right')
       const canvas = canvasRef.current
       if (!canvas) return
       try {
@@ -185,6 +219,9 @@ export function ScratchDate() {
     (event: React.TouchEvent<HTMLCanvasElement>) => {
       event.preventDefault()
       setScratchStarted(true)
+      if (event.touches.length > 0) {
+        setRevealSide(event.touches[0].clientX < window.innerWidth / 2 ? 'left' : 'right')
+      }
       if (event.touches.length === 0) return
       drawing.current = true
       lastPoint.current = null
@@ -232,6 +269,27 @@ export function ScratchDate() {
             <p className="text-[0.6rem] tracking-[0.28em] text-foreground/90 uppercase">
               {invitation.time.note}
             </p>
+          </div>
+
+          <div
+            className={`cracker-burst reveal-side-${revealSide} ${revealed ? 'active' : ''}`}
+            key={burstKey}
+            aria-hidden="true"
+          >
+            {particles.map((particle) => {
+              const style = {
+                '--x': `${particle.x}%`,
+                '--y': `${particle.y}%`,
+                '--dx': `${particle.dx}px`,
+                '--dy': `${particle.dy}px`,
+                '--delay': `${particle.delay}s`,
+                '--duration': `${particle.duration}s`,
+                '--size': `${particle.size}px`,
+                '--hue': `${particle.hue}`,
+              } as CSSProperties
+
+              return <span key={particle.id} className="spark" style={style} />
+            })}
           </div>
 
           <canvas

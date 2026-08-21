@@ -302,6 +302,54 @@
   background: var(--primary);
 }
 
+.cracker-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.cracker-burst.active {
+  opacity: 1;
+}
+
+.cracker-burst.reveal-side-left {
+  background: radial-gradient(circle at 12% 55%, rgba(255, 206, 120, 0.35), transparent 24%);
+}
+
+.cracker-burst.reveal-side-right {
+  background: radial-gradient(circle at 88% 55%, rgba(255, 206, 120, 0.35), transparent 24%);
+}
+
+.cracker-burst .spark {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, hsla(var(--hue), 100%, 70%, 0.95) 28%, rgba(255,192,87,0.7) 58%, transparent 100%);
+  box-shadow: 0 0 10px rgba(255, 214, 123, 0.95), 0 0 22px rgba(255, 142, 57, 0.7);
+  opacity: 0;
+  animation: spark-burst var(--duration) ease-out forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes spark-burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.8);
+  }
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
