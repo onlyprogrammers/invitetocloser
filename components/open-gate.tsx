@@ -130,13 +130,13 @@ export function OpenGate() {
           }`}
         >
           <div
-            className="absolute inset-0 px-3 sm:px-4" 
+            className="absolute inset-0 px-3 sm:px-4"
             style={{
               background:
                 "radial-gradient(circle at 50% 50%, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.5) 42%, rgba(0,0,0,0.18) 72%, rgba(0,0,0,0.1) 100%)",
             }}
           />
-          <p className="relative text-[0.65rem] mt-4 tracking-[0.45em] text-primary uppercase sm:text-xs">
+          <p className="relative text-[0.65rem] translate-y-4 mt-4 tracking-[0.45em] text-primary uppercase sm:text-xs">
             Walima Ceremony of
           </p>
           <h2 className="gold-text px-3 sm:px-4 relative font-script text-5xl leading-[1.15] sm:text-7xl">
