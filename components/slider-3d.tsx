@@ -10,7 +10,7 @@ export function Slider3D({ images = [] }: { images?: string[] }) {
     return (
       images.length > 0
         ? images
-        : ['/images/1.png', '/images/2.png', '/images/3.png']
+        : ['/images/1.jpeg', '/images/2.jpeg', '/images/3.jpeg']
     )
   }, [images])
 
