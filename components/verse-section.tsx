@@ -11,9 +11,7 @@ export function VerseSection() {
           </p>
           <span className="gold-rule h-px w-20" />
           <p className="text-pretty text-base leading-relaxed text-muted-foreground italic">
-            &ldquo;And among His signs is this, that He created for you mates
-            from among yourselves, that you may dwell in tranquility with them,
-            and He has put love and mercy between your hearts.&rdquo;
+            &ldquo;And among His signs is this: He created for you mates from among yourselves, that you may live in peace with them, and He has put love and mercy between your hearts.&rdquo;
           </p>
           <p className="text-xs tracking-[0.3em] text-primary uppercase">
             Qur&apos;an 30:21
