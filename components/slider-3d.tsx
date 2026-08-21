@@ -1,25 +1,54 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export function Slider3D({ images = [] }: { images?: string[] }) {
   const [index, setIndex] = useState(0)
+  const startX = useRef<number | null>(null)
 
   const slides = useMemo(() => {
     return (
       images.length > 0
         ? images
-        : ['/images/venue.png', '/images/gold-arch.png', '/images/gold-foil.png', '/images/mosque-bg.jpg']
+        : ['/images/1.png', '/images/2.png', '/images/3.png']
     )
   }, [images])
 
   useEffect(() => {
-    const t = setInterval(() => setIndex((i) => (i + 1) % slides.length), 4200)
+    const t = setInterval(() => setIndex((i) => (i + 1) % slides.length), 2200)
     return () => clearInterval(t)
   }, [slides.length])
 
+  const changeSlide = (direction: 1 | -1) => {
+    setIndex((current) => (current + direction + slides.length) % slides.length)
+  }
+
+  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    startX.current = event.clientX
+  }
+
+  const onPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (startX.current === null) return
+
+    const deltaX = event.clientX - startX.current
+    const threshold = 40
+
+    if (Math.abs(deltaX) > threshold) {
+      changeSlide(deltaX < 0 ? 1 : -1)
+    }
+
+    startX.current = null
+  }
+
   return (
-    <div className="carousel-3d">
+    <div
+      className="carousel-3d"
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerLeave={() => {
+        startX.current = null
+      }}
+    >
       <div className="stage" aria-live="polite">
         {slides.map((src, i) => {
           const rawOffset = i - index
