@@ -23,14 +23,10 @@ export function Slider3D({ images = [] }: { images?: string[] }) {
     setIndex((current) => (current + direction + slides.length) % slides.length)
   }
 
-  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    startX.current = event.clientX
-  }
-
-  const onPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handleSwipe = (endX: number) => {
     if (startX.current === null) return
 
-    const deltaX = event.clientX - startX.current
+    const deltaX = endX - startX.current
     const threshold = 40
 
     if (Math.abs(deltaX) > threshold) {
@@ -40,14 +36,37 @@ export function Slider3D({ images = [] }: { images?: string[] }) {
     startX.current = null
   }
 
+  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    startX.current = event.clientX
+  }
+
+  const onPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    handleSwipe(event.clientX)
+  }
+
+  const onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches[0]) {
+      startX.current = event.touches[0].clientX
+    }
+  }
+
+  const onTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.changedTouches[0]) {
+      handleSwipe(event.changedTouches[0].clientX)
+    }
+  }
+
   return (
     <div
       className="carousel-3d"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       onPointerLeave={() => {
         startX.current = null
       }}
+      style={{ touchAction: 'pan-y' }}
     >
       <div className="stage" aria-live="polite">
         {slides.map((src, i) => {
