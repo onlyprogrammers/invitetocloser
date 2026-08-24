@@ -1,7 +1,15 @@
 import { notFound } from 'next/navigation'
-import { CalendarDays, Clock3, MapPin } from 'lucide-react'
+import { InvitationProvider } from '@/lib/invitation-context'
+import { invitation } from '@/lib/invitation-data'
+import { HeroInvite } from '@/components/hero-invite'
+import { VerseSection } from '@/components/verse-section'
+import { DateSection } from '@/components/date-section'
+import { VenueSection } from '@/components/venue-section'
+import { DuaSection } from '@/components/dua-section'
+import { ContactSection } from '@/components/contact-section'
+import { ClosingSection } from '@/components/closing-section'
 
-type Invitation = {
+type Row = {
   template_id: string
   host_name: string
   guest_name: string
@@ -19,40 +27,53 @@ async function getInvitation(id: string) {
     cache: 'no-store',
   })
   if (!response.ok) return null
-  const rows = (await response.json()) as Invitation[]
+  const rows = (await response.json()) as Row[]
   return rows[0] ?? null
 }
 
+function toTemplateData(row: Row) {
+  const parsed = new Date(`${row.event_date}T${row.event_time}`)
+  const validDate = !Number.isNaN(parsed.getTime())
+  const date = validDate ? parsed : new Date()
+  const weekday = date.toLocaleDateString('en-US', { weekday: 'long' })
+  const month = date.toLocaleDateString('en-US', { month: 'long' })
+  const day = date.toLocaleDateString('en-US', { day: '2-digit' })
+  const year = date.toLocaleDateString('en-US', { year: 'numeric' })
+  return {
+    ...invitation,
+    groom: row.host_name,
+    bride: row.guest_name,
+    occasion: row.occasion,
+    hosts: row.message || row.host_name,
+    date: { weekday, day, month, year, full: `${weekday}, ${day} ${month} ${year}` },
+    time: { label: row.event_time, note: 'Please join us for this special celebration' },
+    startsAt: `${row.event_date}T${row.event_time}`,
+    venue: { ...invitation.venue, name: row.venue, address: row.address },
+  }
+}
+
 export default async function InvitationPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const data = await getInvitation(id)
-  if (!data) notFound()
-  const rose = data.template_id === 'rose-noor'
+  const row = await getInvitation((await params).id)
+  if (!row) notFound()
+  const data = toTemplateData(row)
   return (
-    <main className="shared-invitation-shell">
-      <article className={`invite-card ${rose ? 'invite-rose' : 'invite-emerald'}`}>
-        <div className="invite-card-inner">
-          <p className="invite-kicker">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
-          <div className="invite-ornament">{rose ? '❀' : '✦'}</div>
-          <p className="invite-eyebrow">{rose ? 'Please join us for an evening of' : 'You are warmly invited to our'}</p>
-          <h1>{data.occasion}</h1>
-          <div className="invite-name">{data.host_name}</div>
-          <p className="invite-copy">{data.message}</p>
-          <div className="invite-rule" />
-          <div className="invite-details">
-            <span><CalendarDays />{data.event_date}</span>
-            <span><Clock3 />{data.event_time}</span>
-            <span><MapPin />{data.venue}<small>{data.address}</small></span>
-          </div>
-          <p className="invite-closing">{rose ? 'A little celebration, a lifetime of love' : 'With love &amp; duas'}</p>
-        </div>
-      </article>
-    </main>
+    <InvitationProvider value={data}>
+      <div className="invitation-page">
+        <main className="relative z-10 mx-auto w-full max-w-2xl">
+          <HeroInvite />
+          <VerseSection />
+          <DateSection />
+          <VenueSection />
+          <DuaSection />
+          <ContactSection />
+          <ClosingSection />
+        </main>
+      </div>
+    </InvitationProvider>
   )
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const data = await getInvitation(id)
-  return { title: data ? `${data.host_name} — ${data.occasion}` : 'Invitation' }
+  const row = await getInvitation((await params).id)
+  return { title: row ? `${row.host_name} — ${row.occasion}` : 'Invitation' }
 }

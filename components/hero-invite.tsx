@@ -1,9 +1,12 @@
+'use client'
+
 import { Ornament } from '@/components/ornament'
 import { Reveal } from '@/components/reveal'
-import { invitation } from '@/lib/invitation-data'
+import { useInvitation } from '@/lib/invitation-context'
 import Slider3D from '@/components/slider-3d'
 
 export function HeroInvite() {
+  const data = useInvitation()
   return (
     <section className="relative overflow-hidden px-6 pt-14 pb-16 sm:pt-20">
       <img
@@ -27,20 +30,20 @@ export function HeroInvite() {
 
         <Reveal delay={120}>
           <p className="text-base tracking-[0.12em] text-muted-foreground uppercase">
-            To the {invitation.occasion} of
+            To the {data.occasion} of
           </p>
         </Reveal>
 
         <Reveal delay={220} className="w-full">
           <div className="flex flex-col items-center gap-2">
             <h1 className="gold-text px-3 sm:px-4 font-script text-6xl leading-[1.1] sm:text-7xl">
-              {invitation.groom}
+              {data.groom}
             </h1>
             <span className="font-sans text-sm tracking-[0.4em] text-secondary/70 uppercase">
               &amp;
             </span>
             <h1 className="gold-text px-3 sm:px-4 font-script text-6xl leading-[1.1] sm:text-7xl">
-              {invitation.bride}
+              {data.bride}
             </h1>
           </div>
         </Reveal>
@@ -62,7 +65,7 @@ export function HeroInvite() {
 
         <Reveal delay={520}>
           <p className="max-w-sm text-pretty text-base leading-relaxed gold-text">
-            With the blessings of Almighty Allah, {invitation.hosts} request the
+            With the blessings of Almighty Allah, {data.hosts} request the
             honour of your presence at the Walima reception, an evening of
             prayers, feast and gratitude.
           </p>

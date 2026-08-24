@@ -6,9 +6,12 @@ import { HeroInvite } from '@/components/hero-invite'
 import { OpenGate } from '@/components/open-gate'
 import { VenueSection } from '@/components/venue-section'
 import { VerseSection } from '@/components/verse-section'
+import { InvitationProvider } from '@/lib/invitation-context'
+import { invitation } from '@/lib/invitation-data'
 
 export default function Page() {
   return (
+    <InvitationProvider value={invitation}>
     <div className="paper-bg relative min-h-screen w-full overflow-x-hidden">
       <div className="fixed-bg" aria-hidden="true" />
       <div className="fixed-bg-veil" aria-hidden="true" />
@@ -23,5 +26,6 @@ export default function Page() {
         <ClosingSection />
       </main>
     </div>
+    </InvitationProvider>
   )
 }

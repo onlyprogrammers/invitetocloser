@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Countdown } from '@/components/countdown'
-import { invitation } from '@/lib/invitation-data'
+import { useInvitation } from '@/lib/invitation-context'
 
 const REVEAL_THRESHOLD = 0.45
 const BRUSH_RADIUS = 20
@@ -11,6 +11,7 @@ const PROGRESS_INTERVAL = 160
 type RevealSide = 'left' | 'right'
 
 export function ScratchDate() {
+  const data = useInvitation()
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const drawing = useRef(false)
   const lastPoint = useRef<{ x: number; y: number } | null>(null)
@@ -254,20 +255,20 @@ export function ScratchDate() {
           <div className="relative flex h-72 flex-col items-center justify-center gap-1 rounded-[1.25rem] border border-primary/20 bg-gradient-to-b from-muted/75 to-background text-center text-foreground">
             <p className="text-[0.6rem] tracking-[0.45em] text-primary uppercase">Insha'Allah</p>
             <p className="font-sans text-xl tracking-[0.3em] text-foreground uppercase">
-              {invitation.date.weekday}
+              {data.date.weekday}
             </p>
             <p className="gold-text font-script text-5xl leading-tight">
-              {invitation.date.day} {invitation.date.month}
+              {data.date.day} {data.date.month}
             </p>
             <p className="font-sans text-lg tracking-[0.35em] text-foreground">
-              {invitation.date.year}
+              {data.date.year}
             </p>
             <div className="gold-rule my-2 h-px w-24" />
             <p className="gold-text font-script text-3xl leading-none">
-              {invitation.time.label}
+              {data.time.label}
             </p>
             <p className="text-[0.6rem] tracking-[0.28em] text-foreground/90 uppercase">
-              {invitation.time.note}
+              {data.time.note}
             </p>
           </div>
 
