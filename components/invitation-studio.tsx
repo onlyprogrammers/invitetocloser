@@ -1,7 +1,9 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { CalendarDays, Clock3, Copy, Eye, MapPin, Sparkles } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { CalendarDays, Clock3, Copy, Eye, LoaderCircle, MapPin, Sparkles } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 type InvitationData = {
   couple: string
@@ -98,9 +100,35 @@ function RoseTemplate({ data }: { data: InvitationData }) {
 }
 
 export function InvitationStudio() {
+  const router = useRouter()
   const [data, setData] = useState(initialData)
   const [template, setTemplate] = useState<'emerald' | 'rose'>('emerald')
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
   const preview = useMemo(() => template === 'emerald' ? <EmeraldTemplate data={data} /> : <RoseTemplate data={data} />, [data, template])
+
+  async function saveInvitation() {
+    setSaving(true)
+    setSaveError('')
+    const supabase = createClient()
+    const { data: saved, error } = await supabase.from('invitations').insert({
+      template_id: template === 'emerald' ? 'emerald-walima' : 'rose-noor',
+      host_name: data.couple,
+      guest_name: data.couple,
+      occasion: data.occasion,
+      message: data.message,
+      event_date: data.date,
+      event_time: data.time,
+      venue: data.venue,
+      address: data.address,
+    }).select('id').single()
+    if (error || !saved) {
+      setSaveError('We could not save this invitation. Please try again.')
+      setSaving(false)
+      return
+    }
+    router.push(`/invite/${saved.id}?template=${template}`)
+  }
 
   return (
     <main className="studio-shell">
@@ -116,6 +144,11 @@ export function InvitationStudio() {
             <button className={`template-option emerald-thumb ${template === 'emerald' ? 'selected' : ''}`} type="button" onClick={() => setTemplate('emerald')}><span>A</span><strong>Emerald Walima</strong><small>Classic &amp; serene</small></button>
             <button className={`template-option rose-thumb ${template === 'rose' ? 'selected' : ''}`} type="button" onClick={() => setTemplate('rose')}><span>R</span><strong>Rose Noor</strong><small>Soft &amp; romantic</small></button>
           </div></div>
+          <button className="publish-button" type="button" onClick={saveInvitation} disabled={saving}>
+            {saving ? <LoaderCircle className="spin" /> : <Sparkles />}
+            {saving ? 'Saving invitation…' : 'Save & open invitation'}
+          </button>
+          {saveError && <p className="save-error" role="alert">{saveError}</p>}
         </section>
         <section className="preview-panel" id="live-preview" aria-label="Live invitation preview"><div className="preview-topline"><span><span className="status-dot" /> Preview</span><button type="button" title="Copy invitation link" aria-label="Copy invitation link" onClick={() => navigator.clipboard?.writeText(window.location.href)}><Copy /></button></div>{preview}</section>
       </div>
