@@ -1,7 +1,10 @@
+'use client'
+
 import { Reveal } from '@/components/reveal'
-import { invitation } from '@/lib/invitation-data'
+import { useInvitation } from '@/lib/invitation-context'
 
 export function ClosingSection() {
+  const data = useInvitation()
   return (
     <footer className="relative overflow-hidden px-6 pt-12 pb-16">
       <img
@@ -50,7 +53,7 @@ export function ClosingSection() {
             </p>
             <div className="rounded-2xl bg-card/80 px-4 py-2 scratch-shimmer">
               <p className="text-xs tracking-[0.34em] text-muted-foreground uppercase text-center">
-                {invitation.groom} &amp; {invitation.bride} ✦ {invitation.date.full}
+                {data.groom} &amp; {data.bride} ✦ {data.date.full}
               </p>
             </div>
           </div>
