@@ -4,6 +4,7 @@ import { Ornament } from '@/components/ornament'
 import { Reveal } from '@/components/reveal'
 import { useInvitation } from '@/lib/invitation-context'
 import Slider3D from '@/components/slider-3d'
+import { Play } from 'lucide-react'
 
 export function HeroInvite() {
   const data = useInvitation()
@@ -71,8 +72,27 @@ export function HeroInvite() {
           </p>
         </Reveal>
 
-        <Reveal delay={640} className="w-full">
-          <div className="w-full pt-6">
+        <Reveal delay={600} className="w-full">
+          <div className="invite-video-wrap">
+            <video
+              className="invite-video"
+              src="/media/invitation.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="A short preview of the invitation celebration"
+            />
+            <a className="invite-open-button" href="#invitation-details">
+              <Play className="size-4 fill-current" aria-hidden="true" />
+              Open invitation
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={680} className="w-full">
+          <div id="invitation-details" className="w-full pt-6">
             <Slider3D />
           </div>
         </Reveal>
